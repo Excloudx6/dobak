@@ -12,7 +12,7 @@ In most cases, you don't even need to manually add it to crontab: if your use ca
 ## Installation
 To download DOBAK from your shell:
 ```
-# curl https://raw.githubusercontent.com/nitefood/dobak/master/dobak.sh > dobak && chmod +x dobak
+curl https://raw.githubusercontent.com/nitefood/dobak/master/dobak.sh > dobak && chmod +x dobak
 ```
 After that, start by running `./dobak --help` for usage instructions.
 
