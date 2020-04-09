@@ -169,7 +169,7 @@ print_help(){
 		\n  ${white}-v, --version\n\t${default}Print dobak version\n\
 		\n  ${white}-h, --help\n\t${default}Display this help\n\
 	\n\n\n${yellow}Note: ${white}before you can use this script, you must set its configuration parameters (backup paths, options, passwords etc). Start by editing ${yellow}${SCRIPTPATH}${default}.\
-	\n\nPlease report any feedback to ${blue}a.provvisiero@bvnetworks.it${default}.\n"
+	\n\nProject homepage: ${blue}https://github.com/nitefood/dobak/${default}\n"
 	clean_exit 0
 }
 
