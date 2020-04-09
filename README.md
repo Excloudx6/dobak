@@ -38,6 +38,46 @@ Once configured, this script will hold sensitive informations like your MySQL pa
 ## Unsupported features
 This script does not perform incremental filesystem backups, only full directory backups.
 
+## Usage
+```
+Usage:
+        dobak <command>
+
+Supported commands:
+
+  -r, --run
+        Run script manually (immediate backup)
+
+  -c, --check-config
+        Perform configuration checks (required programs, compressor, etc) and exit
+        (no data is written to disk)
+
+  -ih, --install-hourly
+        Install under /etc/cron.hourly (create HOURLY Backup job)
+
+  -id, --install-daily
+        Install under /etc/cron.daily (create DAILY Backup job)
+
+  -iw, --install-weekly
+        Install under /etc/cron.weekly (create WEEKLY Backup job)
+
+  -im, --install-monthly
+        Install under /etc/cron.monthly (create MONTHLY Backup job)
+
+  -u, --uninstall-cronjobs
+        Remove all cron jobs (hourly/daily/weekly/monthly) installed using -ih, -id, -iw or -im.
+        Note: does not remove dobak from your system.
+
+  -d, --dump-config
+        Dump configuration settings for easy copy/paste to another server
+
+  -v, --version
+        Print dobak version
+
+  -h, --help
+        Display this help
+```
+
 ## Limitation of Liability
 I will not be liable for damages or losses arising from your use of this script. I run this on all my production servers but backups are a delicate matter. Generally make sure you don't leave anything out, double check your actions and configurations, and, as always, do as much testing as you possibly can before deploying to production.
 
