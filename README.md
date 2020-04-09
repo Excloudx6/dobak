@@ -29,6 +29,8 @@ Once configured, this script will hold sensitive informations like your MySQL pa
 * Easy to use: just list MySQL DBs (or just back them all up) and directories to backup and run it
 * Separate staging (working) directory to backup network filesystems more painlessly
 * Customizable compression for your tar backups (none/gzip/bzip2/xz)
+* Configuration check to test your settings before running any backup job
+* Configuration dump to quickly copy/paste your settings on multiple servers
 * Email notification on warning/error/success
 * Push notifications to your mobile phone on warning/error/success using https://www.pushbullet.com/ (free account required)
 * External uploading of backup files (configurable for every backup or every N days). Currently supported external services: FTP, Owncloud/Nextcloud
