@@ -1,4 +1,4 @@
-# DOBAK
+# DOBAK - MySQL & filesystem backup tool for Linux servers
 
 ## What it is
 DOBAK is a simple, self-contained (ie it consists of only one file, an executable BASH script) tool you place on your server to create backups of your data, optionally compressing them and/or uploading them to external services like FTP and Owncloud. You can choose to be notified through email and/or push notifications of the status of your backup jobs.
