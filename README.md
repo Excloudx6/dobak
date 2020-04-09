@@ -20,6 +20,9 @@ After that, start by running `./dobak --help` for usage instructions.
 ## Configuration
 You configure DOBAK by simply editing it with a text editor and changing values in the `Configuration` section.
 
+## Security considerations
+Once configured, this script will hold sensitive informations like your MySQL password and Pushbullet API token. Make sure you download and run this script from a secure location on your server (`/root` would be a good idea. Never *ever* save it to a publicly accessible path like `/var/www/*`).
+
 ## Supported features
 * Self-contained (consists of a single file). No need to install anything or use separate configuration files.
 * Schedule and remove backup cron jobs directly by running the tool with the appropriate command line option
