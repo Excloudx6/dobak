@@ -1,8 +1,7 @@
 # DOBAK
-Simple, self-contained MySQL DB &amp; filesystem backup tool with email/push notification support and FTP/Owncloud upload support
 
 ## What it is
-DOBAK is a self-contained (ie it consists of only one file, an executable BASH script) tool you place on your server, and it creates backups of your data, optionally compressing them and/or uploading them to external services like FTP and Owncloud.
+DOBAK is a simple, self-contained (ie it consists of only one file, an executable BASH script) tool you place on your server to create backups of your data, optionally compressing them and/or uploading them to external services like FTP and Owncloud. You can choose to be notified through email and/or push notifications of the status of your backup jobs.
 
 ## Why
 This script is the evolution of a simple script I wrote many years ago to perform rapid and painless backups of DBs and filesystems across many servers. It's not meant to replace any more featured backup systems, it's a tool for when you need a single, versatile tool to make simple backups of your data.
