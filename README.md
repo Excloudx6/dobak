@@ -17,26 +17,26 @@ curl https://raw.githubusercontent.com/nitefood/dobak/master/dobak.sh > dobak &&
 After that, start by running `./dobak --help` for usage instructions.
 
 ## Configuration
-You configure DOBAK by simply editing it with a text editor and changing values in the `Configuration` section.
+You configure DOBAK by simply editing it with a text editor and changing values in the **Configuration** section.
 
 ## Security considerations
-Once configured, this script will hold sensitive informations like your MySQL password and Pushbullet API token. Make sure you download and run this script from a secure location on your server (`/root` would be a good idea. Never *ever* save it to a publicly accessible path like `/var/www/*`).
+Once configured, this script will hold sensitive informations like your MySQL password and Pushbullet API token. Make sure you download and run this script from a secure location on your server (*/root* would be a good idea. Never **ever** save it to a publicly accessible path like */var/www/\**).
 
 ## Supported features
 * Self-contained (consists of a single file). No need to install anything or use separate configuration files.
 * Schedule and remove backup cron jobs directly by running the tool with the appropriate command line option
 * Easy to use: just list MySQL DBs (or just back them all up) and directories to backup and run it
 * Separate staging (working) directory to backup network filesystems more painlessly
-* Customizable compression for your tar backups (none/gzip/bzip2/xz)
+* Customizable compression level for your tar backups (*none/gzip/bzip2/xz*)
 * Configuration check to test your settings before running any backup job
-* Configuration dump to quickly copy/paste your settings on multiple servers
+* Configuration dump to quickly copy/paste your settings to multiple servers
 * Email notification on warning/error/success
 * Push notifications to your mobile phone on warning/error/success using https://www.pushbullet.com/ (free account required)
-* External uploading of backup files (configurable for every backup or every N days). Currently supported external services: FTP, Owncloud/Nextcloud
+* External uploading of backup files (configurable for every backup or every *n* days). Currently supported external services: FTP, Owncloud/Nextcloud
 * Configurable automatic purging of old backups
 
 ## Unsupported features
-This script does not perform incremental filesystem backups, only full directory backups.
+This script does *not* perform incremental filesystem backups, only full directory backups.
 
 ## Usage
 ```
