@@ -4,8 +4,8 @@
 # with email/push notification support and FTP/Owncloud upload support
 # Adriano Provvisiero - BV Networks 2002-2020
 #
-version='1.0'
-rlsdate='2020-04-09'
+version='1.1'
+rlsdate='2020-04-11'
 
 ########################################################################
 #
@@ -38,11 +38,18 @@ MYSQL_USER='root'
 MYSQL_PASSWORD=''
 
 # - Names of MySQL DBs to backup, one per line. Supports spaced names and # comments.
-#   Note: if BACKUP_ALL_DATABASES is set to 'true', DBS_TO_BACKUP is ignored.
-BACKUP_ALL_DATABASES=false
-DBS_TO_BACKUP="
-dbexample1
-dbexample2
+#   Note: if BACKUP_ALL_DATABASES=true , only consider DBS_TO_EXCLUDE
+#   Note: if BACKUP_ALL_DATABASES=false, only consider DBS_TO_INCLUDE
+BACKUP_ALL_DATABASES=true
+
+DBS_TO_EXCLUDE="
+information_schema
+performance_schema
+"
+
+DBS_TO_INCLUDE="
+exampledb1
+exampledb2
 "
 
 # - Directories to backup (recursively), one per line. Supports spaced paths and # comments
@@ -416,10 +423,13 @@ sanity_check(){
 
 run_backup(){
 	curdate=$(date +%F_%H.%M)
-	DBLIST=$(echo -e "$DBS_TO_BACKUP" | grep -v "^#" | tr -s '\n')
+	if [ $BACKUP_ALL_DATABASES = true ]; then
+		DBLIST="ALL (except $(echo -e "$DBS_TO_EXCLUDE" | grep -v "^#" | tr '\n' ',' | sed -e 's/^,//' -e 's/.[ ,]$//'))"
+	else
+		DBLIST=$(echo -e "$DBS_TO_INCLUDE" | grep -v "^#" | tr -s '\n')
+	fi
 	DIRLIST=$(echo -e "$DIRS_TO_BACKUP" | grep -v "^#" | tr -s '\n')
 	IFS=$'\n'
-	for db in $(echo "$dbs"); do echo "will backup $db"; done
 	
 	if [ "$STAGING_DIR" = "" ]; then
 		STAGING_DIR="$BACKUP_DESTINATION_DIR"
@@ -470,32 +480,37 @@ run_backup(){
 	chmod 700 "$STAGING_DIR"
 
 	if [ $BACKUP_ALL_DATABASES = true ]; then
-		logme -n "Backing up MySQL DB :\t[${white}ALL DATABASES${default}] ... "
+		dbskiplist="''"
+		for DB in $(echo "${DBS_TO_EXCLUDE}"); do
+			dbskiplist="${dbskiplist}|${DB}"
+		done
+		dbskiplist=$(echo $dbskiplist | sed 's/^\|//')
+		DBS_TO_DUMP=$(mysql -AN -u${MYSQL_USER} -p${MYSQL_PASSWORD} -e "show databases" | grep -Ev "$dbskiplist")
+		logme -n "Backing up MySQL DB(s) :\t[${white}$(echo $DBS_TO_DUMP | tr ' ' ',' | tr -d '\n')${default}] ... "
 		DESTDBFILE="${STAGING_DIR}/db/all_databases.sql"
-		result=$((mysqldump --single-transaction --all-databases --user="$MYSQL_USER" --password="$MYSQL_PASSWORD" >> "${DESTDBFILE}") 2>&1 | grep -v "Using a password")
+		result=$((mysqldump --single-transaction --user="$MYSQL_USER" --password="$MYSQL_PASSWORD" --databases ${DBS_TO_DUMP} > "${DESTDBFILE}") 2>&1 | grep -v "Using a password")
 		if [ -n "$result" ]; then
 			logme "${red}ERROR: $result${default}"
 			BOOL_WARNING=true
 			rm -f "${DESTDBFILE}"
-			continue
+		else
+			[ "$compression" = "none" ] || $compressor_tool "${DESTDBFILE}" &&\
+			logme "${green}OK${default}"
 		fi
-		[ "$compression" = "none" ] || $compressor_tool "${DESTDBFILE}" &&\
-		logme "${green}OK${default}"
 	else
 		for db in $(echo "$DBLIST")
 		do
 			logme -n "Backing up MySQL DB :\t[${white}${db}${default}] ... "
 			DESTDBFILE="${STAGING_DIR}/db/${db}.sql"
-			echo -e "CREATE DATABASE \`${db}\`;\nUSE \`${db}\`;\n\n" > "${DESTDBFILE}" &&\
-				 result=$((mysqldump --single-transaction "${db}" --user="$MYSQL_USER" --password="$MYSQL_PASSWORD" >> "${DESTDBFILE}") 2>&1 | grep -v "Using a password")
-				 if [ -n "$result" ]; then
+			result=$((mysqldump --single-transaction "${db}" --user="$MYSQL_USER" --password="$MYSQL_PASSWORD" > "${DESTDBFILE}") 2>&1 | grep -v "Using a password")
+			if [ -n "$result" ]; then
 				logme "${red}ERROR: $result${default}"
 				BOOL_WARNING=true
 				rm -f "${DESTDBFILE}"
 				continue
-				 fi
-				 [ "$compression" = "none" ] || $compressor_tool "${DESTDBFILE}" &&\
-				 logme "${green}OK${default}"
+			fi
+			[ "$compression" = "none" ] || $compressor_tool "${DESTDBFILE}" &&\
+			logme "${green}OK${default}"
 		done
 	fi
 		
