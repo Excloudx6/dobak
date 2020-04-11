@@ -26,6 +26,7 @@ Once configured, this script will hold sensitive informations like your MySQL pa
 * Self-contained (consists of a single file). No need to install anything or use separate configuration files.
 * Schedule and remove backup cron jobs directly by running the tool with the appropriate command line option
 * Easy to use: just list MySQL DBs (or just back them all up) and directories to backup and run it
+* DB inclusion and exclusion lists
 * Separate staging (working) directory to backup network filesystems more painlessly
 * Customizable compression level for your tar backups (*none/gzip/bzip2/xz*)
 * Configuration check to test your settings before running any backup job
